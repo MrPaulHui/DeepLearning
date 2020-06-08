@@ -1,5 +1,18 @@
 # op前传和反传
 
+注：
+
+1. 这里所说的梯度都是指损失函数相对于这个参数的偏导数，采用链式求导法则得到
+
+2. 链式求导法则一个点，
+   $$
+   y=f(g(x),h(x))
+   $$
+   则y相对于x的梯度为
+   $$
+   dx=\frac{\partial y}{\partial g(x)}\frac{dg(x)}{dx}+\frac{\partial y}{\partial h(x)}\frac{dh(x)}{dx}
+   $$
+
 ## softmax ce loss
 
 这一层不涉及模型权重参数，位于反传最上游
@@ -145,6 +158,38 @@ $$
 dW=X^T\ dY
 $$
 
+### 加入bias的情况
+
+设偏置$b\in R^{N*1}$，前传为
+$$
+Y=XW+b
+$$
+
+$$
+y_{ij}=w_{1j}x_{i1}+w_{2j}x_{i2}+...+w_{Dj}x_{iD}+b_i\ \ i=1,2,...,N,\ \ j=1,2,...,C
+$$
+
+反传中$dW$和$dX$和上面一样，求$db$如下
+$$
+db_i=dy_{i1}\frac{\partial y_{i1}}{\partial b_i}+dy_{i2}\frac{\partial y_{i2}}{\partial b_i}+...+dy_{iC}\frac{\partial y_{iC}}{\partial b_i}=dy_{i1}+dy_{i2}+...+dy_{iC}
+$$
+
+$$
+db=dY\ I
+$$
+
+其中，$I\in R^{C*1}$，为全部是1的列向量，即
+$$
+I=\left[
+\begin{matrix}
+1\\
+1\\
+...\\
+1
+\end{matrix}
+\right]
+$$
+
 ## dropout
 
 参考：https://zhuanlan.zhihu.com/p/38200980
@@ -154,6 +199,10 @@ $$
 ## 激活函数
 
 参考：https://zhuanlan.zhihu.com/p/32610035
+
+### 激活函数作用
+
+在神经网络中引入非线性，如果没有激活函数的非线性表征能力，再多层的神经网络也只是相当于一个矩阵，即一个线性函数进行线性回归，不能表征任意的函数。
 
 ### sigmoid
 
