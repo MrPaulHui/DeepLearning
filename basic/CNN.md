@@ -13,7 +13,11 @@ $$
 
 ### 反传
 
+### 感受野
+
 
 
 ## Pooling
+
+## other Conv function
 
